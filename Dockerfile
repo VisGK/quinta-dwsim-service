@@ -28,6 +28,10 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /app/requirements.txt
 RUN pip3 install -r /app/requirements.txt
 
+# Copy application files first
+COPY app/ /app/
+COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 # Install DWSIM
 COPY scripts/install_dwsim.sh /tmp/install_dwsim.sh
 RUN chmod +x /tmp/install_dwsim.sh && /tmp/install_dwsim.sh
@@ -38,14 +42,10 @@ RUN ls -la /app/dwsim/ && echo "DWSIM installation verified"
 # Run DWSIM test
 RUN python3 /app/test_dwsim.py
 
-# Copy application
-COPY app/ /app/
-COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
 WORKDIR /app
 
 # Create necessary directories
-RUN mkdir -p /app/temp /app/scripts /app/flow /app/reports
+RUN mkdir -p /app/temp /app/scripts /app/flow /app/reports /var/log/supervisor
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
