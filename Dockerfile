@@ -32,6 +32,12 @@ RUN pip3 install -r /app/requirements.txt
 COPY scripts/install_dwsim.sh /tmp/install_dwsim.sh
 RUN chmod +x /tmp/install_dwsim.sh && /tmp/install_dwsim.sh
 
+# Verify DWSIM installation
+RUN ls -la /app/dwsim/ && echo "DWSIM installation verified"
+
+# Run DWSIM test
+RUN python3 /app/test_dwsim.py
+
 # Copy application
 COPY app/ /app/
 COPY scripts/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

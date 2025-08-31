@@ -50,9 +50,10 @@ temp/
 *.temp
 *.log
 
-# DWSIM files
+# DWSIM files (but keep the installation directory)
 *.dwxmz
 *.dwxml
+# Don't ignore the dwsim/ directory itself as it contains installation scripts
 
 # Generated scripts
 scripts/
